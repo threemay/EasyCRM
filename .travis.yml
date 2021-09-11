@@ -4,9 +4,9 @@ language: python
 python:
   - "3.6.4"
 services: 
-    - docker
+  - docker
 
-    deploy:
+deploy:
   provider: elasticbeanstalk
   access_key_id: "$ACCESSKEYID"
   secret_access_key: "$SECRETACCESSKEY1"
