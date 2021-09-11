@@ -3,17 +3,10 @@ sudo: required
 language: python
 python:
   - "3.6.4"
-### command to run tests
-### install:
-###   - pip install -r requirements.txt
-### script: nosetests -v
-
 services: 
     - docker
 
-
-
-deploy:
+    deploy:
   provider: elasticbeanstalk
   access_key_id: "$ACCESSKEYID"
   secret_access_key: "$SECRETACCESSKEY1"
