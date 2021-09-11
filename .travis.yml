@@ -16,6 +16,5 @@ deploy:
   bucket_name: "elasticbeanstalk-us-east-1-092354816535"
   bucket_path: "EBApptest" 
   on:
-    branch: main
+    branch: master
   skip_cleanup: true
-  
