@@ -1,0 +1,6 @@
+docker exec -ti easycrm sh -c "pwd && python -m unittest -v"
+
+docker exec -ti easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
+
+docker ps -aqf "name=easycrm"
+
