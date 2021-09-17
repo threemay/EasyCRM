@@ -37,16 +37,16 @@ pipeline {
 
             }
 
-            stage('unit_test') {
+
+            stage('clean_up') {
 
                 steps {
-                    echo '------------unit_test------------'
+                    echo '------------clean_up------------'
                     sh'''
-                        docker container prune -f
-                        docker run --name easycrm -d easycrm
-                        docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
+                    docker stop easycrm
+                    docker rm easycrm
                     '''
-                    echo '------------unit_test ./ ------------'
+                    echo '------------clean_up ./ ------------'
                 }
 
             }
