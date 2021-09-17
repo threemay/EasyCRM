@@ -31,6 +31,7 @@ pipeline {
                     echo '------------build------------'
                     sh'''
                         docker build -t easycrm .
+                        docker run --name easycrm -d easycrm
                     '''
                     echo '------------build ./ ------------'
                 }
@@ -44,7 +45,6 @@ pipeline {
                             echo '------------test_core------------'
                             sh'''
                                 docker container prune -f
-                                docker run --name easycrm -d easycrm
                                 docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
                             '''
                             echo '------------test_core ./------------'
