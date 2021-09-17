@@ -29,8 +29,9 @@ pipeline {
 
                 steps {
                     echo '------------build------------'
+                    ///add docker build -t easycrm . to next 3rd line
+                    ///docker build -t easycrm . 
                     sh'''
-                        docker build -t easycrm .
                         docker run --name easycrm -d easycrm
                     '''
                     echo '------------build ./ ------------'
@@ -38,8 +39,8 @@ pipeline {
 
             }
 
-            stage('unit_test') {
-                parallel {
+            // stage('unit_test') {
+            //     parallel {
                     stage('test_core'){
                         steps {
                             echo '------------test_core------------'
@@ -60,9 +61,9 @@ pipeline {
                             echo '------------test_auth ./------------'
                         }
                     }
-                }
+            //     }
 
-            }
+            // }
 
             stage('clean_up') {
 
