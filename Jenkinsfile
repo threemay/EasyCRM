@@ -12,7 +12,7 @@ pipeline {
 
     stages {
 
-            stage('checkout from git') {
+            stage('checkout from github') {
 
                 steps {
                     echo '------------checkout from git------------'
@@ -38,15 +38,41 @@ pipeline {
             }
 
             stage('unit_test') {
+                parallel {
+                    stage('test_core'){
+                        steps {
+                            echo '------------test_core------------'
+                            sh'''
+                                docker container prune -f
+                                docker run --name easycrm -d easycrm
+                                docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
+                            '''
+                            echo '------------test_core ./------------'
+                        }
+                    }
+                    
+                    stage('test_auth'){
+                        steps {
+                            echo '------------test_auth------------'
+                            sh'''
+                                docker exec easycrm sh -c "cp ./tests/test_auth.py ./ && python -m unittest test_auth.py -v"
+                            '''
+                            echo '------------test_auth ./------------'
+                        }
+                    }
+                }
+
+            }
+
+            stage('clean_up') {
 
                 steps {
-                    echo '------------unit_test------------'
+                    echo '------------clean_up------------'
                     sh'''
-                        docker container prune -f
-                        docker run --name easycrm -d easycrm
-                        docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
+                    docker stop easycrm
+                    docker rm easycrm
                     '''
-                    echo '------------unit_test ./ ------------'
+                    echo '------------clean_up ./ ------------'
                 }
 
             }
