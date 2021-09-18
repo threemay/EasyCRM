@@ -52,7 +52,27 @@ pipeline {
                         }
                     }
                     
-                    stage('test_auth'){
+                    stage('integration test'){
+                        steps {
+                            sh'''
+                                docker exec easycrm sh -c "curl http://0.0.0.0:8090/login/"
+                                docker exec easycrm sh -c "curl -c cookies.txt \
+                                                        -d "username=test@gmail.com&password=shh" \
+                                                        -X POST http://0.0.0.0:8090/login/"
+                                docker exec easycrm sh -c "curl -b cookies.txt http://0.0.0.0:8090/"
+                                docker exec easycrm sh -c "curl --location --request POST '192.168.31.121:8090/organisation/create' \
+                                                            --form 'name="JiangRen"' \
+                                                            --form 'type="other"' \
+                                                            --form 'address="Wynyard"'"
+
+                            '''
+                        }
+                    }
+            //     }
+
+            // }
+
+            stage('in'){
                         steps {
                             echo '------------test_auth------------'
                             sh'''
@@ -61,9 +81,6 @@ pipeline {
                             echo '------------test_auth ./------------'
                         }
                     }
-            //     }
-
-            // }
 
             stage('clean_up') {
 
