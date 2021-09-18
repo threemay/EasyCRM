@@ -67,7 +67,7 @@ pipeline {
 
             // }
 
-            stage('in'){
+            stage('test_auth'){
                         steps {
                             echo '------------test_auth------------'
                             sh'''
