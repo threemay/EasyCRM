@@ -123,7 +123,7 @@ pipeline {
                 sh """
                 pwd
                 chmod +x geckodriver
-                python webdriver_easy_crm.py
+                python3 webdriver_easy_crm.py
                 """
             }
         }
