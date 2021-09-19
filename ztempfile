@@ -14,6 +14,12 @@ docker exec -it easycrm bash
 curl -c cookies.txt -d "username=test@gmail.com&password=shh" -X POST http://0.0.0.0:8090/login/
 curl -b cookies.txt http://0.0.0.0:8090/
 
+curl -L -c cookies.txt -d "username=test@gmail.com&password=shh" http://0.0.0.0:8090/login/
+
 curl http://0.0.0.0:8090/login/
 
 
+curl -s -o /dev/null -w "%{http_code}" http://0.0.0.0:8090/login/
+
+
+locust -f load_test_easy_crm.py -u 1 -r 1 --host http://localhost:8090 --headless -t 10s

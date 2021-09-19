@@ -28,13 +28,11 @@ pipeline {
             stage('build') {
 
                 steps {
-                    echo '------------build------------'
                     ///add docker build -t easycrm . to next 3rd line
                     ///docker build -t easycrm . 
                     sh'''
                         docker run --name easycrm -d easycrm
                     '''
-                    echo '------------build ./ ------------'
                 }
 
             }
@@ -43,12 +41,18 @@ pipeline {
             //     parallel {
                     stage('test_core'){
                         steps {
-                            echo '------------test_core------------'
                             sh'''
                                 docker container prune -f
                                 docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
                             '''
-                            echo '------------test_core ./------------'
+                        }
+                    }
+
+                    stage('test_auth'){
+                        steps {
+                            sh'''
+                                docker exec easycrm sh -c "cp ./tests/test_auth.py ./ && python -m unittest test_auth.py -v"
+                            '''
                         }
                     }
                     
@@ -58,7 +62,7 @@ pipeline {
                                 docker exec easycrm sh -c "curl http://0.0.0.0:8090/login/"
                                 docker exec easycrm sh -c "curl -c cookies.txt -d 'username=test@gmail.com&password=shh' -X POST http://0.0.0.0:8090/login/"
                                 docker exec easycrm sh -c "curl -b cookies.txt http://0.0.0.0:8090/"
-                                docker exec easycrm sh -c "curl --location --request POST http://0.0.0.0:8090/organisation/create --form 'name="JiangRen"' --form 'type="other"' --form 'address="Wynyard"'"
+                                docker exec easycrm sh -c "curl -b cookies.txt --request POST http://0.0.0.0:8090/organisation/create --form 'name="JiangRen"' --form 'type="other"' --form 'address="Wynyard"'"
 
                             '''
                         }
@@ -67,25 +71,21 @@ pipeline {
 
             // }
 
-            stage('test_auth'){
+            stage('load_test'){
                         steps {
-                            echo '------------test_auth------------'
                             sh'''
-                                docker exec easycrm sh -c "cp ./tests/test_auth.py ./ && python -m unittest test_auth.py -v"
+                                docker exec easycrm sh -c "locust -f load_test_easy_crm.py -u 1 -r 1 --host http://0.0.0.0:8090 --headless -t 3s"
                             '''
-                            echo '------------test_auth ./------------'
                         }
                     }
 
             stage('clean_up') {
 
                 steps {
-                    echo '------------clean_up------------'
                     sh'''
                     docker stop easycrm
                     docker rm easycrm
                     '''
-                    echo '------------clean_up ./ ------------'
                 }
 
             }
