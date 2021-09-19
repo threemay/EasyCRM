@@ -121,9 +121,7 @@ pipeline {
             steps {
                 echo 'Hello World'
                 sh """
-                pwd
-                chmod +x geckodriver
-                python3 webdriver_easy_crm.py
+                    ./webdriver_test.sh
                 """
             }
         }
