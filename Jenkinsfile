@@ -4,7 +4,7 @@ pipeline {
 
      environment {
                      GIT_REPO_URL = 'git@github.com:threemay/EasyCRM.git'
-                     GIT_REPO_BRANCH = 'staging'
+                     GIT_REPO_BRANCH = 'master'
                      GIT_CREDENTIALS_ID = '1'
                      BUILD_USER_EMAIL = '254363807@qq.com'
                      BUILD_USER_ID = 'threemay'
@@ -123,7 +123,6 @@ pipeline {
                 sh """
                 pwd
                 chmod +x geckodriver
-                export PATH=$PATH:$(pwd)
                 python webdriver_easy_crm.py
                 """
             }
