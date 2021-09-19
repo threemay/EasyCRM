@@ -2,7 +2,7 @@ from selenium import webdriver
 
 driver = webdriver.Firefox()
 
-driver.get("http://localhost:8090/login")
+driver.get("http://0.0.0.0:8090/login")
 
 
 username = driver.find_element_by_name('username')

@@ -6,6 +6,8 @@ COPY . /workdir
 
 RUN pip install -r requirements.txt
 
+RUN pip install selenium
+
 RUN python manage.py create_db
 
 CMD ["python", "run.py"]

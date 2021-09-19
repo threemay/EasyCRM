@@ -79,6 +79,14 @@ pipeline {
                         }
                     }
 
+            stage('webdriver_test'){
+                        steps {
+                            sh'''
+                                docker exec easycrm sh -c "python webdriver_easy_crm.py"
+                            '''
+                        }
+                    }
+
             stage('clean_up') {
 
                 steps {
