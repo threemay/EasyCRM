@@ -37,97 +37,97 @@ pipeline {
 
             }
 
-            // stage('unit_test') {
-            //     parallel {
-                    stage('test_core'){
-                        steps {
-                            sh'''
-                                docker container prune -f
-                                docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
-                            '''
-                        }
-                    }
+        //     stage('test_core'){
+        //         steps {
+        //             sh'''
+        //                 docker container prune -f
+        //                 docker exec easycrm sh -c "cp ./tests/test_core.py ./ && python -m unittest -v"
+        //             '''
+        //             }
+        //     }
 
-                    stage('test_auth'){
-                        steps {
-                            sh'''
-                                docker exec easycrm sh -c "cp ./tests/test_auth.py ./ && python -m unittest test_auth.py -v"
-                            '''
-                        }
-                    }
+        //     stage('test_auth'){
+        //         steps {
+        //             sh'''
+        //                 docker exec easycrm sh -c "cp ./tests/test_auth.py ./ && python -m unittest test_auth.py -v"
+        //             '''
+        //         }
+        //     }
                     
-                    stage('integration test'){
-                        steps {
-                            sh'''
-                                docker exec easycrm sh -c "curl http://0.0.0.0:8090/login/"
-                                docker exec easycrm sh -c "curl -c cookies.txt -d 'username=test@gmail.com&password=shh' -X POST http://0.0.0.0:8090/login/"
-                                docker exec easycrm sh -c "curl -b cookies.txt http://0.0.0.0:8090/"
-                                docker exec easycrm sh -c "curl -b cookies.txt --request POST http://0.0.0.0:8090/organisation/create --form 'name="JiangRen"' --form 'type="other"' --form 'address="Wynyard"'"
+        //     stage('integration test'){
+        //         steps {
+        //             sh'''
+        //                 docker exec easycrm sh -c "curl http://0.0.0.0:8090/login/"
+        //                 docker exec easycrm sh -c "curl -c cookies.txt -d 'username=test@gmail.com&password=shh' -X POST http://0.0.0.0:8090/login/"
+        //                 docker exec easycrm sh -c "curl -b cookies.txt http://0.0.0.0:8090/"
+        //                 docker exec easycrm sh -c "curl -b cookies.txt --request POST http://0.0.0.0:8090/organisation/create --form 'name="JiangRen"' --form 'type="other"' --form 'address="Wynyard"'"
 
-                            '''
-                        }
-                    }
-            //     }
+        //             '''
+        //         }
+        //     }
 
-            // }
+        //     stage('load_test'){
+        //                 steps {
+        //                     sh'''
+        //                         docker exec easycrm sh -c "locust -f load_test_easy_crm.py -u 1 -r 1 --host http://0.0.0.0:8090 --headless -t 3s"
+        //                     '''
+        //                 }
+        //             }
 
-            stage('load_test'){
-                        steps {
-                            sh'''
-                                docker exec easycrm sh -c "locust -f load_test_easy_crm.py -u 1 -r 1 --host http://0.0.0.0:8090 --headless -t 3s"
-                            '''
-                        }
-                    }
+        //     stage('webdriver_test'){
+        //                 steps {
+        //                     sh'''
+        //                         python webdriver_easy_crm.py
+        //                     '''
+        //                 }
+        //             }
 
-            stage('webdriver_test'){
-                        steps {
-                            sh'''
-                                docker exec easycrm sh -c "python webdriver_easy_crm.py"
-                            '''
-                        }
-                    }
+        //     stage('clean_up') {
 
-            stage('clean_up') {
+        //         steps {
+        //             sh'''
+        //             docker stop easycrm
+        //             docker rm easycrm
+        //             '''
+        //         }
 
-                steps {
-                    sh'''
-                    docker stop easycrm
-                    docker rm easycrm
-                    '''
-                }
+        //     }
 
+        // //     stage('master -> staging') {
+        // //     steps {
+                
+        // //         git url: "${GIT_REPO_URL}",
+        // //             credentialsId: "${GIT_CREDENTIALS_ID}",
+        // //             branch: "${GIT_REPO_BRANCH}"
+
+                
+        // //         sshagent(["${GIT_CREDENTIALS_ID}"]) {
+		// // 		sh """
+		// // 			git config user.email "${BUILD_USER_EMAIL}"
+		// // 			git config user.name "${BUILD_USER_ID}"
+		// // 			git checkout "${GIT_REPO_BRANCH}"
+        // //             git pull origin master
+        // //             git branch
+		// // 			git rebase master
+        // //             git push origin staging
+		// // 		"""
+		// // 	    }
+
+        // //     }
+        // // }
+
+
+        stage('Hello1') {
+            steps {
+                echo 'Hello World'
+                sh """
+                pwd
+                chmod +x geckodriver
+                export PATH=$PATH:$(pwd)
+                python webdriver_easy_crm.py
+                """
             }
-
-        //     stage('master -> staging') {
-        //     steps {
-                
-        //         git url: "${GIT_REPO_URL}",
-        //             credentialsId: "${GIT_CREDENTIALS_ID}",
-        //             branch: "${GIT_REPO_BRANCH}"
-
-                
-        //         sshagent(["${GIT_CREDENTIALS_ID}"]) {
-		// 		sh """
-		// 			git config user.email "${BUILD_USER_EMAIL}"
-		// 			git config user.name "${BUILD_USER_ID}"
-		// 			git checkout "${GIT_REPO_BRANCH}"
-        //             git pull origin master
-        //             git branch
-		// 			git rebase master
-        //             git push origin staging
-		// 		"""
-		// 	    }
-
-        //         echo 'Hello World'
-        //     }
-        // }
-
-
-        // stage('Hello1') {
-        //     steps {
-        //         echo 'Hello World'
-        //     }
-        // }
+        }
 
 
 
