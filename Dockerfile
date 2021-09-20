@@ -10,5 +10,9 @@ RUN pip install selenium
 
 RUN python manage.py create_db
 
+EXPOSE 80
+
+EXPOSE 8080
+
 CMD ["python", "run.py"]
 

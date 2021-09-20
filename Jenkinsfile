@@ -121,7 +121,8 @@ pipeline {
             steps {
                 echo 'Hello World'
                 sh """
-                    ./webdriver_test.sh
+                    docker exec easycrm sh -c "chmod +x webdriver_test.sh"
+                    docker exec easycrm sh -c "./webdriver_test.sh"
                 """
             }
         }

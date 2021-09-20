@@ -19,7 +19,7 @@ docker build -t easycrm .
 ```
 
 ```
-docker run -p 8090:8090 easycrm
+docker run --name easycrm -p 8090:8090 easycrm
 ```
 
 Now you can access http://0.0.0.0:8090/login/ with Username and Password: test@gmail.com/shh 
